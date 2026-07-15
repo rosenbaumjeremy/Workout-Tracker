@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, FlatList, Platform, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useColors';
@@ -11,7 +11,22 @@ import type { Workout } from '@/context/WorkoutContext';
 export default function HistoryScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { workouts, isLoaded } = useWorkouts();
+  const { workouts, isLoaded, deleteWorkout } = useWorkouts();
+
+  const handleDelete = (id: string, name: string) => {
+    Alert.alert(
+      'Delete workout?',
+      `"${name}" will be permanently removed.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => deleteWorkout(id),
+        },
+      ],
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -46,6 +61,7 @@ export default function HistoryScreen() {
           <WorkoutCard
             workout={item}
             onPress={() => router.push(`/workout/${item.id}`)}
+            onDelete={() => handleDelete(item.id, item.name)}
           />
         )}
       />

@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   Platform,
   Pressable,
   ScrollView,
@@ -20,8 +21,23 @@ import { greetingForNow } from '@/lib/dateUtils';
 export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { workouts, stats, isLoaded } = useWorkouts();
+  const { workouts, stats, isLoaded, deleteWorkout } = useWorkouts();
   const recent = workouts.slice(0, 3);
+
+  const handleDelete = (id: string, name: string) => {
+    Alert.alert(
+      'Delete workout?',
+      `"${name}" will be permanently removed.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => deleteWorkout(id),
+        },
+      ],
+    );
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -114,6 +130,7 @@ export default function HomeScreen() {
                 key={workout.id}
                 workout={workout}
                 onPress={() => router.push(`/workout/${workout.id}`)}
+                onDelete={() => handleDelete(workout.id, workout.name)}
               />
             ))}
           </View>

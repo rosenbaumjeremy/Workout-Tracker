@@ -9,9 +9,10 @@ import { formatDayLabel, formatDuration } from '@/lib/dateUtils';
 interface WorkoutCardProps {
   workout: Workout;
   onPress: () => void;
+  onDelete?: () => void;
 }
 
-export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
+export function WorkoutCard({ workout, onPress, onDelete }: WorkoutCardProps) {
   const colors = useColors();
   const exerciseNames = workout.exercises.map((e) => e.name).join(' · ');
   const volume = totalVolume(workout);
@@ -38,6 +39,19 @@ export function WorkoutCard({ workout, onPress }: WorkoutCardProps) {
             {formatDayLabel(workout.date)}
           </Text>
         </View>
+        {onDelete ? (
+          <Pressable
+            onPress={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            hitSlop={10}
+            style={[styles.editButton, { backgroundColor: colors.secondary }]}
+            testID={`edit-workout-${workout.id}`}
+          >
+            <Feather name="edit-2" size={14} color={colors.mutedForeground} />
+          </Pressable>
+        ) : null}
         <Feather name="chevron-right" size={18} color={colors.mutedForeground} />
       </View>
 
@@ -83,6 +97,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+  },
+  editButton: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   name: {
     fontSize: 16,
