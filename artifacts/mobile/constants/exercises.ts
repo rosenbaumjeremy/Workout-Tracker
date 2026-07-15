@@ -63,6 +63,26 @@ export const EXERCISE_LIBRARY: ExerciseCategory[] = [
   },
 ];
 
+const CARDIO_KEYWORDS = [
+  'run',
+  'jog',
+  'sprint',
+  'bike',
+  'cycle',
+  'cycling',
+  'row',
+  'swim',
+  'cardio',
+  'treadmill',
+  'elliptical',
+  'jump rope',
+];
+
+export function looksLikeCardio(name: string): boolean {
+  const lower = name.toLowerCase();
+  return CARDIO_KEYWORDS.some((keyword) => lower.includes(keyword));
+}
+
 export function searchExercises(query: string): ExerciseCategory[] {
   const trimmed = query.trim().toLowerCase();
   if (!trimmed) return EXERCISE_LIBRARY;

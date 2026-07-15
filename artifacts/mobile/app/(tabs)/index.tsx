@@ -13,6 +13,7 @@ import { router } from 'expo-router';
 import { useColors } from '@/hooks/useColors';
 import { useWorkouts } from '@/context/WorkoutContext';
 import { StatCard } from '@/components/StatCard';
+import { TotalsCard } from '@/components/TotalsCard';
 import { WorkoutCard } from '@/components/WorkoutCard';
 import { EmptyState } from '@/components/EmptyState';
 import { Feather } from '@expo/vector-icons';
@@ -80,6 +81,12 @@ export default function HomeScreen() {
             value={String(stats.totalWorkouts)}
           />
         </View>
+
+        <TotalsCard
+          volume={stats.lifetimeVolume}
+          distance={stats.lifetimeDistance}
+          onPress={() => router.push('/totals')}
+        />
 
         <Pressable
           onPress={() => router.push('/workout/new')}

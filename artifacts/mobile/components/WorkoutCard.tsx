@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useColors } from '@/hooks/useColors';
 import { Feather } from '@expo/vector-icons';
 import type { Workout } from '@/context/WorkoutContext';
-import { totalSets, totalVolume } from '@/context/WorkoutContext';
+import { totalDistance, totalSets, totalVolume } from '@/context/WorkoutContext';
 import { formatDayLabel, formatDuration } from '@/lib/dateUtils';
 
 interface WorkoutCardProps {
@@ -16,6 +16,7 @@ export function WorkoutCard({ workout, onPress, onDelete }: WorkoutCardProps) {
   const colors = useColors();
   const exerciseNames = workout.exercises.map((e) => e.name).join(' · ');
   const volume = totalVolume(workout);
+  const distance = totalDistance(workout);
 
   return (
     <Pressable
@@ -71,12 +72,22 @@ export function WorkoutCard({ workout, onPress, onDelete }: WorkoutCardProps) {
             {totalSets(workout)} sets
           </Text>
         </View>
-        <View style={styles.footerItem}>
-          <Feather name="trending-up" size={13} color={colors.mutedForeground} />
-          <Text style={[styles.footerText, { color: colors.mutedForeground }]}>
-            {Math.round(volume).toLocaleString()} lb
-          </Text>
-        </View>
+        {volume > 0 && (
+          <View style={styles.footerItem}>
+            <Feather name="trending-up" size={13} color={colors.mutedForeground} />
+            <Text style={[styles.footerText, { color: colors.mutedForeground }]}>
+              {Math.round(volume).toLocaleString()} lb
+            </Text>
+          </View>
+        )}
+        {distance > 0 && (
+          <View style={styles.footerItem}>
+            <Feather name="wind" size={13} color={colors.mutedForeground} />
+            <Text style={[styles.footerText, { color: colors.mutedForeground }]}>
+              {distance.toFixed(1)} mi
+            </Text>
+          </View>
+        )}
         <View style={styles.footerItem}>
           <Feather name="clock" size={13} color={colors.mutedForeground} />
           <Text style={[styles.footerText, { color: colors.mutedForeground }]}>

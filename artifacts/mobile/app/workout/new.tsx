@@ -44,13 +44,14 @@ export default function NewWorkoutScreen() {
     return () => clearInterval(interval);
   }, [startTime]);
 
-  const handleAddExercise = (exerciseName: string) => {
+  const handleAddExercise = (exerciseName: string, isCardio: boolean) => {
     setExercises((prev) => [
       ...prev,
       {
         id: generateId(),
         name: exerciseName,
-        sets: [{ id: generateId(), reps: 0, weight: 0 }],
+        isCardio,
+        sets: [{ id: generateId(), reps: 0, weight: 0, distance: 0 }],
       },
     ]);
     setPickerVisible(false);
@@ -69,6 +70,7 @@ export default function NewWorkoutScreen() {
               id: generateId(),
               reps: last?.reps ?? 0,
               weight: last?.weight ?? 0,
+              distance: last?.distance ?? 0,
             },
           ],
         };
@@ -89,7 +91,7 @@ export default function NewWorkoutScreen() {
   const handleUpdateSet = (
     exerciseId: string,
     setId: string,
-    field: 'reps' | 'weight',
+    field: 'reps' | 'weight' | 'distance',
     value: string,
   ) => {
     const numeric = value.replace(/[^0-9.]/g, '');
@@ -154,7 +156,12 @@ export default function NewWorkoutScreen() {
       durationSeconds: elapsedSeconds,
       exercises: exercises
         .filter((ex) => ex.sets.length > 0)
-        .map((ex) => ({ id: ex.id, name: ex.name, sets: ex.sets })),
+        .map((ex) => ({
+          id: ex.id,
+          name: ex.name,
+          isCardio: ex.isCardio,
+          sets: ex.sets,
+        })),
     });
 
     router.replace('/(tabs)');

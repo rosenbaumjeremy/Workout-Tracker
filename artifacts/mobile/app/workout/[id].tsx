@@ -3,7 +3,12 @@ import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useColors } from '@/hooks/useColors';
-import { totalSets, totalVolume, useWorkouts } from '@/context/WorkoutContext';
+import {
+  totalDistance,
+  totalSets,
+  totalVolume,
+  useWorkouts,
+} from '@/context/WorkoutContext';
 import { Feather } from '@expo/vector-icons';
 import {
   formatClock,
@@ -52,7 +57,27 @@ export default function WorkoutDetailScreen() {
   };
 
   const volume = totalVolume(workout);
+  const distance = totalDistance(workout);
   const sets = totalSets(workout);
+
+  const statsList: { key: string; value: string; label: string }[] = [
+    { key: 'duration', value: formatDuration(workout.durationSeconds), label: 'Duration' },
+    { key: 'sets', value: String(sets), label: 'Sets' },
+  ];
+  if (volume > 0) {
+    statsList.push({
+      key: 'volume',
+      value: Math.round(volume).toLocaleString(),
+      label: 'Volume (lb)',
+    });
+  }
+  if (distance > 0) {
+    statsList.push({
+      key: 'distance',
+      value: distance.toFixed(2),
+      label: 'Distance (mi)',
+    });
+  }
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
@@ -88,34 +113,19 @@ export default function WorkoutDetailScreen() {
         </Text>
 
         <View style={styles.statsRow}>
-          <View
-            style={[styles.stat, { backgroundColor: colors.card, borderRadius: colors.radius }]}
-          >
-            <Text style={[styles.statValue, { color: colors.foreground }]}>
-              {formatDuration(workout.durationSeconds)}
-            </Text>
-            <Text style={[styles.statLabel, { color: colors.mutedForeground }]}>
-              Duration
-            </Text>
-          </View>
-          <View
-            style={[styles.stat, { backgroundColor: colors.card, borderRadius: colors.radius }]}
-          >
-            <Text style={[styles.statValue, { color: colors.foreground }]}>{sets}</Text>
-            <Text style={[styles.statLabel, { color: colors.mutedForeground }]}>
-              Sets
-            </Text>
-          </View>
-          <View
-            style={[styles.stat, { backgroundColor: colors.card, borderRadius: colors.radius }]}
-          >
-            <Text style={[styles.statValue, { color: colors.foreground }]}>
-              {Math.round(volume).toLocaleString()}
-            </Text>
-            <Text style={[styles.statLabel, { color: colors.mutedForeground }]}>
-              Volume (lb)
-            </Text>
-          </View>
+          {statsList.map((stat) => (
+            <View
+              key={stat.key}
+              style={[styles.stat, { backgroundColor: colors.card, borderRadius: colors.radius }]}
+            >
+              <Text style={[styles.statValue, { color: colors.foreground }]}>
+                {stat.value}
+              </Text>
+              <Text style={[styles.statLabel, { color: colors.mutedForeground }]}>
+                {stat.label}
+              </Text>
+            </View>
+          ))}
         </View>
 
         <View style={styles.exerciseList}>
@@ -134,10 +144,12 @@ export default function WorkoutDetailScreen() {
                 {exercise.sets.map((set, index) => (
                   <View key={set.id} style={styles.setRow}>
                     <Text style={[styles.setIndex, { color: colors.mutedForeground }]}>
-                      Set {index + 1}
+                      {exercise.isCardio ? `Run ${index + 1}` : `Set ${index + 1}`}
                     </Text>
                     <Text style={[styles.setValue, { color: colors.foreground }]}>
-                      {set.reps} reps × {set.weight} lb
+                      {exercise.isCardio
+                        ? `${(set.distance ?? 0).toFixed(2)} mi`
+                        : `${set.reps} reps × ${set.weight} lb`}
                     </Text>
                   </View>
                 ))}
@@ -178,10 +190,12 @@ const styles = StyleSheet.create({
   },
   statsRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
   },
   stat: {
-    flex: 1,
+    flexGrow: 1,
+    flexBasis: '30%',
     padding: 14,
     gap: 6,
   },

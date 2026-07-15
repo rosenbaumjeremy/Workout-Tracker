@@ -12,13 +12,13 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColors } from '@/hooks/useColors';
 import { Feather } from '@expo/vector-icons';
-import { searchExercises } from '@/constants/exercises';
+import { looksLikeCardio, searchExercises } from '@/constants/exercises';
 import * as Haptics from 'expo-haptics';
 
 interface ExercisePickerModalProps {
   visible: boolean;
   onClose: () => void;
-  onSelect: (name: string) => void;
+  onSelect: (name: string, isCardio: boolean) => void;
 }
 
 export function ExercisePickerModal({
@@ -31,16 +31,16 @@ export function ExercisePickerModal({
   const [query, setQuery] = useState('');
   const groups = searchExercises(query);
 
-  const handleSelect = (name: string) => {
+  const handleSelect = (name: string, isCardio: boolean) => {
     if (Platform.OS !== 'web') Haptics.selectionAsync();
-    onSelect(name);
+    onSelect(name, isCardio);
     setQuery('');
   };
 
   const handleAddCustom = () => {
     const trimmed = query.trim();
     if (!trimmed) return;
-    handleSelect(trimmed);
+    handleSelect(trimmed, looksLikeCardio(trimmed));
   };
 
   return (
@@ -130,7 +130,9 @@ export function ExercisePickerModal({
                   {group.exercises.map((name, index) => (
                     <Pressable
                       key={name}
-                      onPress={() => handleSelect(name)}
+                      onPress={() =>
+                        handleSelect(name, group.category === 'Cardio')
+                      }
                       style={({ pressed }) => [
                         styles.exerciseRow,
                         index < group.exercises.length - 1 && {

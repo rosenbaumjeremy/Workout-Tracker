@@ -29,6 +29,7 @@ function RootLayoutNav() {
         options={{ headerShown: false, presentation: 'fullScreenModal' }}
       />
       <Stack.Screen name="workout/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="totals" options={{ headerShown: false }} />
     </Stack>
   );
 }

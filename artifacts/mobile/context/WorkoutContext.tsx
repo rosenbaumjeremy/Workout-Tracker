@@ -12,11 +12,13 @@ export interface WorkoutSet {
   id: string;
   reps: number;
   weight: number;
+  distance?: number; // miles, used by cardio-type exercises
 }
 
 export interface WorkoutExercise {
   id: string;
   name: string;
+  isCardio?: boolean;
   sets: WorkoutSet[];
 }
 
@@ -32,6 +34,8 @@ export interface WorkoutStats {
   totalWorkouts: number;
   thisWeekWorkouts: number;
   currentStreakDays: number;
+  lifetimeVolume: number;
+  lifetimeDistance: number;
 }
 
 interface WorkoutContextValue {
@@ -47,6 +51,88 @@ const STORAGE_KEY = 'volt-log/workouts';
 
 function generateId(): string {
   return Date.now().toString() + Math.random().toString(36).substring(2, 9);
+}
+
+export function totalVolume(workout: Workout): number {
+  return workout.exercises
+    .filter((ex) => !ex.isCardio)
+    .reduce(
+      (sum, ex) =>
+        sum + ex.sets.reduce((s, set) => s + set.reps * set.weight, 0),
+      0,
+    );
+}
+
+export function totalDistance(workout: Workout): number {
+  return workout.exercises
+    .filter((ex) => ex.isCardio)
+    .reduce(
+      (sum, ex) => sum + ex.sets.reduce((s, set) => s + (set.distance ?? 0), 0),
+      0,
+    );
+}
+
+export function totalSets(workout: Workout): number {
+  return workout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
+}
+
+export interface ExerciseTotal {
+  name: string;
+  sets: number;
+  volume: number;
+}
+
+export interface CardioTotal {
+  name: string;
+  sets: number;
+  distance: number;
+}
+
+export function aggregateExerciseTotals(workouts: Workout[]): {
+  strength: ExerciseTotal[];
+  cardio: CardioTotal[];
+} {
+  const strengthMap = new Map<string, ExerciseTotal>();
+  const cardioMap = new Map<string, CardioTotal>();
+
+  for (const workout of workouts) {
+    for (const exercise of workout.exercises) {
+      if (exercise.isCardio) {
+        const entry = cardioMap.get(exercise.name) ?? {
+          name: exercise.name,
+          sets: 0,
+          distance: 0,
+        };
+        entry.sets += exercise.sets.length;
+        entry.distance += exercise.sets.reduce(
+          (s, set) => s + (set.distance ?? 0),
+          0,
+        );
+        cardioMap.set(exercise.name, entry);
+      } else {
+        const entry = strengthMap.get(exercise.name) ?? {
+          name: exercise.name,
+          sets: 0,
+          volume: 0,
+        };
+        entry.sets += exercise.sets.length;
+        entry.volume += exercise.sets.reduce(
+          (s, set) => s + set.reps * set.weight,
+          0,
+        );
+        strengthMap.set(exercise.name, entry);
+      }
+    }
+  }
+
+  return {
+    strength: Array.from(strengthMap.values()).sort(
+      (a, b) => b.volume - a.volume,
+    ),
+    cardio: Array.from(cardioMap.values()).sort(
+      (a, b) => b.distance - a.distance,
+    ),
+  };
 }
 
 function computeStats(workouts: Workout[]): WorkoutStats {
@@ -71,7 +157,19 @@ function computeStats(workouts: Workout[]): WorkoutStats {
     cursor.setDate(cursor.getDate() - 1);
   }
 
-  return { totalWorkouts, thisWeekWorkouts, currentStreakDays };
+  const lifetimeVolume = workouts.reduce((sum, w) => sum + totalVolume(w), 0);
+  const lifetimeDistance = workouts.reduce(
+    (sum, w) => sum + totalDistance(w),
+    0,
+  );
+
+  return {
+    totalWorkouts,
+    thisWeekWorkouts,
+    currentStreakDays,
+    lifetimeVolume,
+    lifetimeDistance,
+  };
 }
 
 const WorkoutContext = createContext<WorkoutContextValue | undefined>(
@@ -146,16 +244,4 @@ export function useWorkouts(): WorkoutContextValue {
     throw new Error('useWorkouts must be used within a WorkoutProvider');
   }
   return ctx;
-}
-
-export function totalVolume(workout: Workout): number {
-  return workout.exercises.reduce(
-    (sum, ex) =>
-      sum + ex.sets.reduce((s, set) => s + set.reps * set.weight, 0),
-    0,
-  );
-}
-
-export function totalSets(workout: Workout): number {
-  return workout.exercises.reduce((sum, ex) => sum + ex.sets.length, 0);
 }

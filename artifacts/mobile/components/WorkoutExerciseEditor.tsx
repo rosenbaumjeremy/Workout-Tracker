@@ -8,14 +8,17 @@ import type { WorkoutSet } from '@/context/WorkoutContext';
 export interface ExerciseDraft {
   id: string;
   name: string;
+  isCardio?: boolean;
   sets: WorkoutSet[];
 }
+
+type SetField = 'reps' | 'weight' | 'distance';
 
 interface WorkoutExerciseEditorProps {
   exercise: ExerciseDraft;
   onAddSet: () => void;
   onRemoveSet: (setId: string) => void;
-  onUpdateSet: (setId: string, field: 'reps' | 'weight', value: string) => void;
+  onUpdateSet: (setId: string, field: SetField, value: string) => void;
   onRemoveExercise: () => void;
 }
 
@@ -27,6 +30,7 @@ export function WorkoutExerciseEditor({
   onRemoveExercise,
 }: WorkoutExerciseEditorProps) {
   const colors = useColors();
+  const isCardio = !!exercise.isCardio;
 
   const handleAddSet = () => {
     if (Platform.OS !== 'web') Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -52,14 +56,22 @@ export function WorkoutExerciseEditor({
       {exercise.sets.length > 0 && (
         <View style={styles.columnHeader}>
           <Text style={[styles.columnLabel, { color: colors.mutedForeground, width: 34 }]}>
-            SET
+            {isCardio ? 'RUN' : 'SET'}
           </Text>
-          <Text style={[styles.columnLabel, { color: colors.mutedForeground, flex: 1 }]}>
-            REPS
-          </Text>
-          <Text style={[styles.columnLabel, { color: colors.mutedForeground, flex: 1 }]}>
-            WEIGHT (LB)
-          </Text>
+          {isCardio ? (
+            <Text style={[styles.columnLabel, { color: colors.mutedForeground, flex: 1 }]}>
+              DISTANCE (MI)
+            </Text>
+          ) : (
+            <>
+              <Text style={[styles.columnLabel, { color: colors.mutedForeground, flex: 1 }]}>
+                REPS
+              </Text>
+              <Text style={[styles.columnLabel, { color: colors.mutedForeground, flex: 1 }]}>
+                WEIGHT (LB)
+              </Text>
+            </>
+          )}
           <View style={{ width: 28 }} />
         </View>
       )}
@@ -69,38 +81,59 @@ export function WorkoutExerciseEditor({
           <Text style={[styles.setIndex, { color: colors.mutedForeground }]}>
             {index + 1}
           </Text>
-          <TextInput
-            value={set.reps > 0 ? String(set.reps) : ''}
-            onChangeText={(value) => onUpdateSet(set.id, 'reps', value)}
-            keyboardType="number-pad"
-            placeholder="0"
-            placeholderTextColor={colors.mutedForeground}
-            style={[
-              styles.input,
-              {
-                color: colors.foreground,
-                backgroundColor: colors.secondary,
-                borderRadius: colors.radius / 2,
-              },
-            ]}
-            testID={`reps-input-${set.id}`}
-          />
-          <TextInput
-            value={set.weight > 0 ? String(set.weight) : ''}
-            onChangeText={(value) => onUpdateSet(set.id, 'weight', value)}
-            keyboardType="decimal-pad"
-            placeholder="0"
-            placeholderTextColor={colors.mutedForeground}
-            style={[
-              styles.input,
-              {
-                color: colors.foreground,
-                backgroundColor: colors.secondary,
-                borderRadius: colors.radius / 2,
-              },
-            ]}
-            testID={`weight-input-${set.id}`}
-          />
+          {isCardio ? (
+            <TextInput
+              value={set.distance && set.distance > 0 ? String(set.distance) : ''}
+              onChangeText={(value) => onUpdateSet(set.id, 'distance', value)}
+              keyboardType="decimal-pad"
+              placeholder="0.0"
+              placeholderTextColor={colors.mutedForeground}
+              style={[
+                styles.input,
+                {
+                  color: colors.foreground,
+                  backgroundColor: colors.secondary,
+                  borderRadius: colors.radius / 2,
+                },
+              ]}
+              testID={`distance-input-${set.id}`}
+            />
+          ) : (
+            <>
+              <TextInput
+                value={set.reps > 0 ? String(set.reps) : ''}
+                onChangeText={(value) => onUpdateSet(set.id, 'reps', value)}
+                keyboardType="number-pad"
+                placeholder="0"
+                placeholderTextColor={colors.mutedForeground}
+                style={[
+                  styles.input,
+                  {
+                    color: colors.foreground,
+                    backgroundColor: colors.secondary,
+                    borderRadius: colors.radius / 2,
+                  },
+                ]}
+                testID={`reps-input-${set.id}`}
+              />
+              <TextInput
+                value={set.weight > 0 ? String(set.weight) : ''}
+                onChangeText={(value) => onUpdateSet(set.id, 'weight', value)}
+                keyboardType="decimal-pad"
+                placeholder="0"
+                placeholderTextColor={colors.mutedForeground}
+                style={[
+                  styles.input,
+                  {
+                    color: colors.foreground,
+                    backgroundColor: colors.secondary,
+                    borderRadius: colors.radius / 2,
+                  },
+                ]}
+                testID={`weight-input-${set.id}`}
+              />
+            </>
+          )}
           <Pressable
             onPress={() => onRemoveSet(set.id)}
             hitSlop={10}
@@ -126,7 +159,7 @@ export function WorkoutExerciseEditor({
       >
         <Feather name="plus" size={16} color={colors.foreground} />
         <Text style={[styles.addSetText, { color: colors.foreground }]}>
-          Add Set
+          {isCardio ? 'Add Distance' : 'Add Set'}
         </Text>
       </Pressable>
     </View>
