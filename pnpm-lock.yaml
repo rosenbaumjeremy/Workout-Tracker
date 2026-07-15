@@ -234,6 +234,9 @@ importers:
       '@expo/vector-icons':
         specifier: ^15.0.3
         version: 15.1.1(expo-font@14.0.12(expo@54.0.35)(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      '@hebcal/core':
+        specifier: ^6.6.0
+        version: 6.6.0
       '@react-native-async-storage/async-storage':
         specifier: 2.2.0
         version: 2.2.0(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))
@@ -1297,6 +1300,17 @@ packages:
 
   '@gerrit0/mini-shiki@3.23.0':
     resolution: {integrity: sha512-bEMORlG0cqdjVyCEuU0cDQbORWX+kYCeo0kV1lbxF5bt4r7SID2l9bqsxJEM0zndaxpOUT7riCyIVEuqq/Ynxg==}
+
+  '@hebcal/core@6.6.0':
+    resolution: {integrity: sha512-LNQ8XrmG0+F9ZiYMj40kK1/ISnGi3e2XZnktXk3PjEHV/PyHWzIbVuc/q+XnOQDwN98vxGOII3WskDtT0AvZ0g==}
+    engines: {node: '>= 18'}
+
+  '@hebcal/hdate@0.22.5':
+    resolution: {integrity: sha512-olfU0L0Bi+AgkFsrSa/4t+LT3jAW6Q58EFROV8AhyzAqc+8TfAjZYd/wl8yUSqDJjVohlD3ynekCxdZZ230cQQ==}
+
+  '@hebcal/noaa@0.12.1':
+    resolution: {integrity: sha512-pHx4gTYQzOkwSyPx3IrSZQfD+CCscDcLGA/Uae/49bE4uWA+KsI0x1A7hcpEzu9MJE0SX7SbLnj9g70Qb6zx5A==}
+    engines: {node: '>=18'}
 
   '@hookform/resolvers@3.10.0':
     resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
@@ -4653,6 +4667,10 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
+  quick-lru@7.3.0:
+    resolution: {integrity: sha512-k9lSsjl36EJdK7I06v7APZCbyGT2vMTsYSRX1Q2nbYmnkBqgUhRkAuzH08Ciotteu/PLJmIF2+tti7o3C/ts2g==}
+    engines: {node: '>=18'}
+
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
@@ -5217,6 +5235,15 @@ packages:
   tar@7.5.20:
     resolution: {integrity: sha512-9FcyK4PA6+WbzlTM9WhQm6vB5W7cP7dUiPsv1g7YDwEQnQ1CGpK3MGlKk/ITVWMk05kHZuBhmVhiv8LZoy/PFQ==}
     engines: {node: '>=18'}
+
+  temporal-polyfill@1.0.1:
+    resolution: {integrity: sha512-N2SoI9olnW7BUsU8RosDphZQl9s+WJ8O7PoJMFCr/e5/1rFkVI4GNOWaSeySG+UoP04foPYsnLWbJmbXOiShZg==}
+
+  temporal-spec@1.0.0:
+    resolution: {integrity: sha512-00Ahj1e1ifaERTMOIIGpOCdOo9IEk2m6GGSMedsn9a2SIsGLdOTbmME1Htv6IM82b6VHrzSUTIVc7YHy6hdhFQ==}
+
+  temporal-utils@1.0.1:
+    resolution: {integrity: sha512-HAixuesxFQIUaQk3ptX2jhfO/FsOkgVkDDMawvp6n/fkB1q6BKfs3lURw9I+pK/2e2e/q/vrLrxmeqauBoyGMQ==}
 
   terminal-link@2.1.1:
     resolution: {integrity: sha512-un0FmiRUQNr5PJqy9kP7c40F5BOfpGlYTrxonDChEZB7pzZxRNp/bt+ymiy9/npwXya9KH99nJ/GXFIiUkYGFQ==}
@@ -6685,6 +6712,19 @@ snapshots:
       '@shikijs/themes': 3.23.0
       '@shikijs/types': 3.23.0
       '@shikijs/vscode-textmate': 10.0.2
+
+  '@hebcal/core@6.6.0':
+    dependencies:
+      '@hebcal/hdate': 0.22.5
+      '@hebcal/noaa': 0.12.1
+      quick-lru: 7.3.0
+      temporal-polyfill: 1.0.1
+
+  '@hebcal/hdate@0.22.5': {}
+
+  '@hebcal/noaa@0.12.1':
+    dependencies:
+      temporal-polyfill: 1.0.1
 
   '@hookform/resolvers@3.10.0(react-hook-form@7.81.0(react@19.1.0))':
     dependencies:
@@ -10689,6 +10729,8 @@ snapshots:
 
   quick-lru@5.1.1: {}
 
+  quick-lru@7.3.0: {}
+
   range-parser@1.2.1: {}
 
   range-parser@1.3.0: {}
@@ -11329,6 +11371,15 @@ snapshots:
       minipass: 7.1.3
       minizlib: 3.1.0
       yallist: 5.0.0
+
+  temporal-polyfill@1.0.1:
+    dependencies:
+      temporal-spec: 1.0.0
+      temporal-utils: 1.0.1
+
+  temporal-spec@1.0.0: {}
+
+  temporal-utils@1.0.1: {}
 
   terminal-link@2.1.1:
     dependencies:

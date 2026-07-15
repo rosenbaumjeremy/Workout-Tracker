@@ -20,6 +20,7 @@ import { LevelCard } from '@/components/LevelCard';
 import { AchievementBadge } from '@/components/AchievementBadge';
 import { Feather } from '@expo/vector-icons';
 import { greetingForNow } from '@/lib/dateUtils';
+import { formatHebrewDate } from '@/lib/hebrewDate';
 import { ACHIEVEMENTS } from '@/lib/gamification';
 
 export default function HomeScreen() {
@@ -27,6 +28,14 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { workouts, stats, isLoaded, deleteWorkout } = useWorkouts();
   const recent = workouts.slice(0, 3);
+  const today = new Date();
+  const englishDate = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(today);
+  const hebrewDate = formatHebrewDate(today);
   const achievementTeaser = [
     ...ACHIEVEMENTS.filter((a) => stats.unlockedAchievementIds.includes(a.id)),
     ...ACHIEVEMENTS.filter((a) => !stats.unlockedAchievementIds.includes(a.id)),
@@ -60,14 +69,32 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerRow}>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={[styles.greeting, { color: colors.mutedForeground }]}>
               {greetingForNow()}
             </Text>
             <Text style={[styles.title, { color: colors.foreground }]}>
               Shai&apos;s Workout Log
             </Text>
+            <View style={styles.dateRow}>
+              <Text style={[styles.dateText, { color: colors.mutedForeground }]}>
+                {englishDate}
+              </Text>
+              <Text style={[styles.dateDot, { color: colors.mutedForeground }]}>
+                ·
+              </Text>
+              <Text style={[styles.hebrewDateText, { color: colors.mutedForeground }]}>
+                {hebrewDate}
+              </Text>
+            </View>
           </View>
+          <Pressable
+            onPress={() => router.push('/timer')}
+            style={[styles.timerButton, { backgroundColor: colors.card, borderRadius: colors.radius }]}
+            testID="open-timer"
+          >
+            <Feather name="clock" size={20} color={colors.primary} />
+          </Pressable>
         </View>
 
         <LevelCard
@@ -198,6 +225,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    gap: 12,
   },
   greeting: {
     fontSize: 14,
@@ -207,6 +235,30 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Inter_700Bold',
     marginTop: 2,
+  },
+  dateRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 6,
+    flexWrap: 'wrap',
+  },
+  dateText: {
+    fontSize: 13,
+    fontFamily: 'Inter_500Medium',
+  },
+  dateDot: {
+    fontSize: 13,
+  },
+  hebrewDateText: {
+    fontSize: 13,
+    fontFamily: 'Inter_500Medium',
+  },
+  timerButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   statsRow: {
     flexDirection: 'row',

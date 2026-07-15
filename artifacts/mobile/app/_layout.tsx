@@ -32,6 +32,10 @@ function RootLayoutNav() {
       <Stack.Screen name="workout/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="totals" options={{ headerShown: false }} />
       <Stack.Screen name="achievements" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="timer"
+        options={{ headerShown: false, presentation: 'modal' }}
+      />
     </Stack>
   );
 }
