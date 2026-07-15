@@ -6,12 +6,18 @@
   "build": {
     "preview": {
       "distribution": "internal",
+      "env": {
+        "ENABLE_EXPERIMENTAL_COREPACK": "1"
+      },
       "android": {
         "buildType": "apk"
       }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "ENABLE_EXPERIMENTAL_COREPACK": "1"
+      }
     }
   },
   "submit": {
