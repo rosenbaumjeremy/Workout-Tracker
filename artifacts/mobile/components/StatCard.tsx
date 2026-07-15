@@ -8,10 +8,13 @@ interface StatCardProps {
   label: string;
   value: string;
   accent?: boolean;
+  /** Splash color used for the icon badge when not the primary accent card. */
+  tint?: string;
 }
 
-export function StatCard({ icon, label, value, accent }: StatCardProps) {
+export function StatCard({ icon, label, value, accent, tint }: StatCardProps) {
   const colors = useColors();
+  const badgeColor = accent ? colors.primaryForeground : (tint ?? colors.primary);
 
   return (
     <View
@@ -23,11 +26,22 @@ export function StatCard({ icon, label, value, accent }: StatCardProps) {
         },
       ]}
     >
-      <Feather
-        name={icon}
-        size={18}
-        color={accent ? colors.primaryForeground : colors.mutedForeground}
-      />
+      <View
+        style={[
+          styles.iconBadge,
+          {
+            backgroundColor: accent
+              ? 'rgba(0,0,0,0.14)'
+              : `${badgeColor}22`,
+          },
+        ]}
+      >
+        <Feather
+          name={icon}
+          size={16}
+          color={accent ? colors.primaryForeground : badgeColor}
+        />
+      </View>
       <Text
         style={[
           styles.value,
@@ -60,6 +74,13 @@ const styles = StyleSheet.create({
     gap: 8,
     minHeight: 96,
     justifyContent: 'space-between',
+  },
+  iconBadge: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   value: {
     fontSize: 22,

@@ -12,6 +12,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter';
+import { Feather } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -30,16 +31,22 @@ function RootLayoutNav() {
       />
       <Stack.Screen name="workout/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="totals" options={{ headerShown: false }} />
+      <Stack.Screen name="achievements" options={{ headerShown: false }} />
     </Stack>
   );
 }
 
 export default function RootLayout() {
+  // Explicitly preload the Feather icon font alongside our text fonts and
+  // gate rendering on both. Without this, icon glyphs can briefly (or, on
+  // some devices, persistently) render as the font's fallback "missing
+  // glyph" box instead of the intended icon.
   const [fontsLoaded, fontError] = useFonts({
     Inter_400Regular,
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
+    ...Feather.font,
   });
 
   useEffect(() => {

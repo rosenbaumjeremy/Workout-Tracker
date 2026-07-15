@@ -1,0 +1,1 @@
+- [Vector icon "tofu" glyphs](icon-font-preload.md) — Feather icons showing as a box-with-x mean the icon font isn't guaranteed loaded; preload via useFonts.

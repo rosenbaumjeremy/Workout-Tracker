@@ -16,14 +16,21 @@ import { StatCard } from '@/components/StatCard';
 import { TotalsCard } from '@/components/TotalsCard';
 import { WorkoutCard } from '@/components/WorkoutCard';
 import { EmptyState } from '@/components/EmptyState';
+import { LevelCard } from '@/components/LevelCard';
+import { AchievementBadge } from '@/components/AchievementBadge';
 import { Feather } from '@expo/vector-icons';
 import { greetingForNow } from '@/lib/dateUtils';
+import { ACHIEVEMENTS } from '@/lib/gamification';
 
 export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const { workouts, stats, isLoaded, deleteWorkout } = useWorkouts();
   const recent = workouts.slice(0, 3);
+  const achievementTeaser = [
+    ...ACHIEVEMENTS.filter((a) => stats.unlockedAchievementIds.includes(a.id)),
+    ...ACHIEVEMENTS.filter((a) => !stats.unlockedAchievementIds.includes(a.id)),
+  ].slice(0, 6);
 
   const handleDelete = (id: string, name: string) => {
     Alert.alert(
@@ -63,6 +70,14 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        <LevelCard
+          level={stats.level}
+          xpIntoLevel={stats.xpIntoLevel}
+          xpForNextLevel={stats.xpForNextLevel}
+          levelProgress={stats.levelProgress}
+          onPress={() => router.push('/achievements')}
+        />
+
         <View style={styles.statsRow}>
           <StatCard
             icon="zap"
@@ -74,13 +89,40 @@ export default function HomeScreen() {
             icon="calendar"
             label="This Week"
             value={String(stats.thisWeekWorkouts)}
+            tint="#4C8BF5"
           />
           <StatCard
             icon="award"
             label="Total"
             value={String(stats.totalWorkouts)}
+            tint="#B084F5"
           />
         </View>
+
+        <View style={styles.sectionHeader}>
+          <Text style={[styles.sectionTitle, { color: colors.foreground }]}>
+            Achievements
+          </Text>
+          <Pressable onPress={() => router.push('/achievements')} hitSlop={8}>
+            <Text style={[styles.seeAll, { color: colors.primary }]}>
+              See All
+            </Text>
+          </Pressable>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.achievementRow}
+        >
+          {achievementTeaser.map((a) => (
+            <AchievementBadge
+              key={a.id}
+              achievement={a}
+              unlocked={stats.unlockedAchievementIds.includes(a.id)}
+              compact
+            />
+          ))}
+        </ScrollView>
 
         <TotalsCard
           volume={stats.lifetimeVolume}
@@ -169,6 +211,10 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     gap: 10,
+  },
+  achievementRow: {
+    gap: 12,
+    paddingRight: 8,
   },
   startButton: {
     flexDirection: 'row',

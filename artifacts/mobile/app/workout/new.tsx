@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Modal,
   Platform,
   Pressable,
   StyleSheet,
@@ -11,9 +12,10 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollViewCompat';
 import { useColors } from '@/hooks/useColors';
-import { useWorkouts } from '@/context/WorkoutContext';
+import { computeWorkoutStats, useWorkouts, type Workout } from '@/context/WorkoutContext';
 import {
   ExercisePickerModal,
   type ExerciseSelectOptions,
@@ -24,6 +26,16 @@ import {
 } from '@/components/WorkoutExerciseEditor';
 import { Feather } from '@expo/vector-icons';
 import { defaultWorkoutName, formatDuration } from '@/lib/dateUtils';
+import { ACHIEVEMENTS, type Achievement } from '@/lib/gamification';
+
+const GOLD_GRADIENT = ['#FFD166', '#FF8A3D'] as const;
+
+interface CelebrationData {
+  earnedXp: number;
+  leveledUp: boolean;
+  newLevel: number;
+  newAchievements: Achievement[];
+}
 
 function generateId(): string {
   return Date.now().toString() + Math.random().toString(36).substring(2, 9);
@@ -32,13 +44,14 @@ function generateId(): string {
 export default function NewWorkoutScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
-  const { addWorkout } = useWorkouts();
+  const { addWorkout, workouts } = useWorkouts();
 
   const [startTime] = useState(() => Date.now());
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [name, setName] = useState(defaultWorkoutName());
   const [exercises, setExercises] = useState<ExerciseDraft[]>([]);
   const [pickerVisible, setPickerVisible] = useState(false);
+  const [celebration, setCelebration] = useState<CelebrationData | null>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -168,7 +181,7 @@ export default function NewWorkoutScreen() {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
 
-    await addWorkout({
+    const newWorkout: Omit<Workout, 'id'> = {
       name: name.trim() || defaultWorkoutName(),
       date: new Date(startTime).toISOString(),
       durationSeconds: elapsedSeconds,
@@ -181,8 +194,41 @@ export default function NewWorkoutScreen() {
           runType: ex.runType,
           sets: ex.sets,
         })),
-    });
+    };
 
+    // Diff gamification stats before/after this workout so we can celebrate
+    // XP gained, level-ups, and newly unlocked achievements. Computed
+    // directly (not via the hook's `stats`) since context state hasn't
+    // re-rendered yet at this point in the flow.
+    const prevStats = computeWorkoutStats(workouts);
+    const nextStats = computeWorkoutStats([
+      { ...newWorkout, id: 'preview' },
+      ...workouts,
+    ]);
+    const earnedXp = nextStats.totalXp - prevStats.totalXp;
+    const leveledUp = nextStats.level > prevStats.level;
+    const newAchievements = ACHIEVEMENTS.filter(
+      (a) =>
+        nextStats.unlockedAchievementIds.includes(a.id) &&
+        !prevStats.unlockedAchievementIds.includes(a.id),
+    );
+
+    await addWorkout(newWorkout);
+
+    if (Platform.OS !== 'web' && (leveledUp || newAchievements.length > 0)) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+
+    setCelebration({
+      earnedXp,
+      leveledUp,
+      newLevel: nextStats.level,
+      newAchievements,
+    });
+  };
+
+  const handleCelebrationDone = () => {
+    setCelebration(null);
     router.replace('/(tabs)');
   };
 
@@ -273,6 +319,70 @@ export default function NewWorkoutScreen() {
         onClose={() => setPickerVisible(false)}
         onSelect={handleAddExercise}
       />
+
+      <Modal visible={!!celebration} transparent animationType="fade">
+        <View style={styles.celebrationBackdrop}>
+          <View
+            style={[
+              styles.celebrationCard,
+              { backgroundColor: colors.card, borderRadius: colors.radius },
+            ]}
+          >
+            <LinearGradient
+              colors={GOLD_GRADIENT}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.celebrationBadge}
+            >
+              <Feather name="award" size={32} color="#5A3200" />
+            </LinearGradient>
+
+            <Text style={[styles.celebrationTitle, { color: colors.foreground }]}>
+              {celebration?.leveledUp ? `Level Up! Lv.${celebration.newLevel}` : 'Workout Complete'}
+            </Text>
+            <Text style={[styles.celebrationXp, { color: colors.mutedForeground }]}>
+              +{celebration?.earnedXp ?? 0} XP earned
+            </Text>
+
+            {celebration && celebration.newAchievements.length > 0 && (
+              <View style={styles.celebrationAchievements}>
+                {celebration.newAchievements.map((a) => (
+                  <View key={a.id} style={styles.celebrationAchievementRow}>
+                    <View style={[styles.celebrationAchievementIcon, { backgroundColor: colors.secondary }]}>
+                      <Feather
+                        name={a.icon as keyof typeof Feather.glyphMap}
+                        size={16}
+                        color={colors.primary}
+                      />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={[styles.celebrationAchievementTitle, { color: colors.foreground }]}>
+                        {a.title}
+                      </Text>
+                      <Text style={[styles.celebrationAchievementDesc, { color: colors.mutedForeground }]}>
+                        {a.description}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            )}
+
+            <Pressable
+              onPress={handleCelebrationDone}
+              style={[
+                styles.celebrationButton,
+                { backgroundColor: colors.primary, borderRadius: colors.radius },
+              ]}
+              testID="celebration-continue"
+            >
+              <Text style={[styles.celebrationButtonText, { color: colors.primaryForeground }]}>
+                Nice!
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -335,5 +445,73 @@ const styles = StyleSheet.create({
   addExerciseText: {
     fontSize: 15,
     fontFamily: 'Inter_600SemiBold',
+  },
+  celebrationBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  celebrationCard: {
+    width: '100%',
+    maxWidth: 360,
+    padding: 24,
+    alignItems: 'center',
+    gap: 6,
+  },
+  celebrationBadge: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  celebrationTitle: {
+    fontSize: 20,
+    fontFamily: 'Inter_700Bold',
+    textAlign: 'center',
+  },
+  celebrationXp: {
+    fontSize: 14,
+    fontFamily: 'Inter_600SemiBold',
+    marginBottom: 8,
+  },
+  celebrationAchievements: {
+    width: '100%',
+    gap: 10,
+    marginBottom: 12,
+  },
+  celebrationAchievementRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  celebrationAchievementIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  celebrationAchievementTitle: {
+    fontSize: 13,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  celebrationAchievementDesc: {
+    fontSize: 11,
+    fontFamily: 'Inter_400Regular',
+  },
+  celebrationButton: {
+    width: '100%',
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8,
+  },
+  celebrationButtonText: {
+    fontSize: 15,
+    fontFamily: 'Inter_700Bold',
   },
 });
