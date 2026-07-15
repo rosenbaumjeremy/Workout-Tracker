@@ -1,0 +1,161 @@
+Jul 15 13:00:15.01
+GET
+404
+workout-tracker-api-server-45uqpyukq.vercel.app
+/favicon.png
+{"level":30,"time":1784109615059,"pid":4,"hostname":"169.254.75.167","req":{"id":4,"method":"GET","url":"/favicon.png"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:00:14.87
+GET
+---
+workout-tracker-api-server-45uqpyukq.vercel.app
+/favicon.ico
+{"level":30,"time":1784109614944,"pid":4,"hostname":"169.254.75.167","req":{"id":3,"method":"GET","url":"/favicon.ico"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:00:14.84
+GET
+404
+workout-tracker-api-server-45uqpyukq.vercel.app
+/favicon.png
+{"level":30,"time":1784109614908,"pid":4,"hostname":"169.254.75.167","req":{"id":2,"method":"GET","url":"/favicon.png"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:00:14.72
+GET
+---
+workout-tracker-api-server-45uqpyukq.vercel.app
+/favicon.ico
+{"level":30,"time":1784109614791,"pid":4,"hostname":"169.254.75.167","req":{"id":1,"method":"GET","url":"/favicon.ico"},"res":{"statusCode":404},"responseTime":9,"msg":"request completed"}
+Jul 15 13:00:14.48
+GET
+500
+workout-tracker-api-server-45uqpyukq.vercel.app
+/
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/var/task/artifacts/api-server/src/routes' is not supported resolving ES modules imported from /var/task/artifacts/api-server/src/app.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:265:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+ 
+  url: 'file:///var/task/artifacts/api-server/src/routes'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 13:00:14.47
+GET
+---
+workout-tracker-api-server-45uqpyukq.vercel.app
+/
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/var/task/artifacts/api-server/src/routes' is not supported resolving ES modules imported from /var/task/artifacts/api-server/src/app.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:265:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+ 
+  url: 'file:///var/task/artifacts/api-server/src/routes'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 12:59:39.68
+GET
+500
+workout-tracker-api-server-45uqpyukq.vercel.app
+/
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/var/task/artifacts/api-server/src/routes' is not supported resolving ES modules imported from /var/task/artifacts/api-server/src/app.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:265:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+ 
+  url: 'file:///var/task/artifacts/api-server/src/routes'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 12:59:35.54
+GET
+500
+workout-tracker-api-server-45uqpyukq.vercel.app
+/
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import '/var/task/artifacts/api-server/src/routes' is not supported resolving ES modules imported from /var/task/artifacts/api-server/src/app.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:265:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_UNSUPPORTED_DIR_IMPORT',
+ 
+  url: 'file:///var/task/artifacts/api-server/src/routes'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+No more logs to show within selected timeline
