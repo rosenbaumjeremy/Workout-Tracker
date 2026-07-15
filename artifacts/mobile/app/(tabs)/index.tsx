@@ -41,7 +41,7 @@ export default function HomeScreen() {
               {greetingForNow()}
             </Text>
             <Text style={[styles.title, { color: colors.foreground }]}>
-              Volt Log
+              Shai&apos;s Workout Log
             </Text>
           </View>
         </View>

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Fitness Tracker",
-    "slug": "mobile",
+    "name": "Shai's Fitness Tracker",
+    "slug": "shaisfitnesstracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "shaisfitnesstracker",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -14,9 +14,12 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.shaisfitnesstracker.app"
     },
-    "android": {},
+    "android": {
+      "package": "com.shaisfitnesstracker.app"
+    },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
