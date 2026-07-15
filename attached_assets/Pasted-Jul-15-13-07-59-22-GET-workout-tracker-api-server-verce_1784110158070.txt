@@ -1,0 +1,196 @@
+Jul 15 13:07:59.22
+GET
+---
+workout-tracker-api-server.vercel.app
+/
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imported from /var/task/artifacts/api-server/src/routes/health.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:277:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_MODULE_NOT_FOUND',
+ 
+  url: 'file:///var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 13:07:45.48
+GET
+404
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/favicon.png
+{"level":30,"time":1784110065564,"pid":4,"hostname":"169.254.6.213","req":{"id":4,"method":"GET","url":"/favicon.png"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:07:45.38
+GET
+404
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/favicon.ico
+{"level":30,"time":1784110065438,"pid":4,"hostname":"169.254.6.213","req":{"id":3,"method":"GET","url":"/favicon.ico"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:07:45.25
+GET
+404
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/favicon.png
+{"level":30,"time":1784110065305,"pid":4,"hostname":"169.254.6.213","req":{"id":2,"method":"GET","url":"/favicon.png"},"res":{"statusCode":404},"responseTime":1,"msg":"request completed"}
+Jul 15 13:07:44.99
+GET
+404
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/favicon.ico
+{"level":30,"time":1784110065188,"pid":4,"hostname":"169.254.6.213","req":{"id":1,"method":"GET","url":"/favicon.ico"},"res":{"statusCode":404},"responseTime":10,"msg":"request completed"}
+Jul 15 13:07:44.75
+GET
+500
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imported from /var/task/artifacts/api-server/src/routes/health.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:277:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_MODULE_NOT_FOUND',
+ 
+  url: 'file:///var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 13:07:44.75
+GET
+500
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imported from /var/task/artifacts/api-server/src/routes/health.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:277:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_MODULE_NOT_FOUND',
+ 
+  url: 'file:///var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 13:07:44.63
+GET
+500
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imported from /var/task/artifacts/api-server/src/routes/health.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:277:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_MODULE_NOT_FOUND',
+ 
+  url: 'file:///var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+ 
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imported from /var/task/artifacts/api-server/src/routes/health.js
+ 
+    at finalizeResolution (node:internal/modules/esm/resolve:277:11)
+ 
+    at moduleResolve (node:internal/modules/esm/resolve:871:10)
+ 
+    at moduleResolveWithNodePath (node:internal/modules/esm/resolve:998:14)
+ 
+    at defaultResolve (node:internal/modules/esm/resolve:1041:79)
+ 
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+ 
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+ 
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+ 
+    at #resolve (node:internal/modules/esm/loader:683:17)
+ 
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+ 
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:163:33) {
+ 
+  code: 'ERR_MODULE_NOT_FOUND',
+ 
+  url: 'file:///var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts'
+ 
+}
+ 
+Node.js process exited with exit status: 1. The logs above can help with debugging the issue.
+Jul 15 13:07:44.59
+GET
+500
+workout-tracker-api-server-5igq7lwxw.vercel.app
+/
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/artifacts/api-server/node_modules/@workspace/api-zod/src/index.ts' imp
