@@ -33,7 +33,7 @@
       "expo-font",
       "expo-web-browser"
     ],
-      "experiments": {
+    "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
@@ -42,3 +42,5 @@
         "projectId": "13749614-7a68-425f-b315-0d28111d5c4d"
       }
     }
+  }
+}
