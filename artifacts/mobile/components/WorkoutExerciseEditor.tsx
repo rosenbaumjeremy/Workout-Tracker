@@ -9,6 +9,7 @@ export interface ExerciseDraft {
   id: string;
   name: string;
   isCardio?: boolean;
+  runType?: 'Easy' | 'Tempo' | 'Long' | 'Interval';
   sets: WorkoutSet[];
 }
 
@@ -45,9 +46,18 @@ export function WorkoutExerciseEditor({
       ]}
     >
       <View style={styles.header}>
-        <Text style={[styles.name, { color: colors.foreground }]}>
-          {exercise.name}
-        </Text>
+        <View style={styles.titleWrap}>
+          <Text style={[styles.name, { color: colors.foreground }]}>
+            {exercise.name}
+          </Text>
+          {exercise.runType && (
+            <View style={[styles.runBadge, { backgroundColor: colors.accent }]}>
+              <Text style={[styles.runBadgeText, { color: colors.accentForeground }]}>
+                {exercise.runType === 'Interval' ? 'Intervals' : `${exercise.runType} Run`}
+              </Text>
+            </View>
+          )}
+        </View>
         <Pressable onPress={onRemoveExercise} hitSlop={10} testID={`remove-exercise-${exercise.id}`}>
           <Feather name="trash-2" size={17} color={colors.mutedForeground} />
         </Pressable>
@@ -176,10 +186,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  titleWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   name: {
     fontSize: 16,
     fontFamily: 'Inter_600SemiBold',
-    flex: 1,
+  },
+  runBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  runBadgeText: {
+    fontSize: 10,
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 0.3,
   },
   columnHeader: {
     flexDirection: 'row',

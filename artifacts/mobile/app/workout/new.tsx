@@ -14,7 +14,10 @@ import * as Haptics from 'expo-haptics';
 import { KeyboardAwareScrollViewCompat } from '@/components/KeyboardAwareScrollViewCompat';
 import { useColors } from '@/hooks/useColors';
 import { useWorkouts } from '@/context/WorkoutContext';
-import { ExercisePickerModal } from '@/components/ExercisePickerModal';
+import {
+  ExercisePickerModal,
+  type ExerciseSelectOptions,
+} from '@/components/ExercisePickerModal';
 import {
   WorkoutExerciseEditor,
   type ExerciseDraft,
@@ -44,14 +47,29 @@ export default function NewWorkoutScreen() {
     return () => clearInterval(interval);
   }, [startTime]);
 
-  const handleAddExercise = (exerciseName: string, isCardio: boolean) => {
+  const handleAddExercise = (
+    exerciseName: string,
+    isCardio: boolean,
+    options?: ExerciseSelectOptions,
+  ) => {
+    const sets =
+      options?.runType === 'Interval'
+        ? Array.from({ length: options.repeatCount ?? 1 }, () => ({
+            id: generateId(),
+            reps: 0,
+            weight: 0,
+            distance: options.repeatDistance ?? 0,
+          }))
+        : [{ id: generateId(), reps: 0, weight: 0, distance: 0 }];
+
     setExercises((prev) => [
       ...prev,
       {
         id: generateId(),
         name: exerciseName,
         isCardio,
-        sets: [{ id: generateId(), reps: 0, weight: 0, distance: 0 }],
+        runType: options?.runType,
+        sets,
       },
     ]);
     setPickerVisible(false);
@@ -160,6 +178,7 @@ export default function NewWorkoutScreen() {
           id: ex.id,
           name: ex.name,
           isCardio: ex.isCardio,
+          runType: ex.runType,
           sets: ex.sets,
         })),
     });

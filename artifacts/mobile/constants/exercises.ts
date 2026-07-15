@@ -59,8 +59,25 @@ export const EXERCISE_LIBRARY: ExerciseCategory[] = [
   },
   {
     category: 'Cardio',
-    exercises: ['Treadmill Run', 'Rowing Machine', 'Cycling', 'Jump Rope'],
+    exercises: ['Running', 'Treadmill Run', 'Rowing Machine', 'Cycling', 'Jump Rope'],
   },
+];
+
+// Exercises that support the "tailor your run" flow (run type + interval
+// repeats) in the exercise picker.
+export const RUNNING_EXERCISE_NAMES = ['Running', 'Treadmill Run'];
+
+export function isRunningExercise(name: string): boolean {
+  return RUNNING_EXERCISE_NAMES.includes(name);
+}
+
+export type RunType = 'Easy' | 'Tempo' | 'Long' | 'Interval';
+
+export const RUN_TYPES: { type: RunType; label: string; description: string; icon: string }[] = [
+  { type: 'Easy', label: 'Easy Run', description: 'Relaxed, steady pace', icon: 'sun' },
+  { type: 'Tempo', label: 'Tempo Run', description: 'Sustained, comfortably hard', icon: 'trending-up' },
+  { type: 'Long', label: 'Long Run', description: 'Distance-building endurance', icon: 'map' },
+  { type: 'Interval', label: 'Interval Repeats', description: 'e.g. 6 × 400m with rest', icon: 'repeat' },
 ];
 
 const CARDIO_KEYWORDS = [

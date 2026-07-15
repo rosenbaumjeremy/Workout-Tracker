@@ -137,9 +137,18 @@ export default function WorkoutDetailScreen() {
                 { backgroundColor: colors.card, borderRadius: colors.radius },
               ]}
             >
-              <Text style={[styles.exerciseName, { color: colors.foreground }]}>
-                {exercise.name}
-              </Text>
+              <View style={styles.exerciseTitleRow}>
+                <Text style={[styles.exerciseName, { color: colors.foreground }]}>
+                  {exercise.name}
+                </Text>
+                {exercise.runType && (
+                  <View style={[styles.runBadge, { backgroundColor: colors.accent }]}>
+                    <Text style={[styles.runBadgeText, { color: colors.accentForeground }]}>
+                      {exercise.runType === 'Interval' ? 'Intervals' : `${exercise.runType} Run`}
+                    </Text>
+                  </View>
+                )}
+              </View>
               <View style={styles.setTable}>
                 {exercise.sets.map((set, index) => (
                   <View key={set.id} style={styles.setRow}>
@@ -214,9 +223,24 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 10,
   },
+  exerciseTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   exerciseName: {
     fontSize: 16,
     fontFamily: 'Inter_600SemiBold',
+  },
+  runBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  runBadgeText: {
+    fontSize: 10,
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 0.3,
   },
   setTable: {
     gap: 8,

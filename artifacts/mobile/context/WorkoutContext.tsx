@@ -15,10 +15,13 @@ export interface WorkoutSet {
   distance?: number; // miles, used by cardio-type exercises
 }
 
+export type RunType = 'Easy' | 'Tempo' | 'Long' | 'Interval';
+
 export interface WorkoutExercise {
   id: string;
   name: string;
   isCardio?: boolean;
+  runType?: RunType;
   sets: WorkoutSet[];
 }
 
