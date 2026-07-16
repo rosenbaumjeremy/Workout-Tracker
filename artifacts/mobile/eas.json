@@ -6,18 +6,16 @@
   "build": {
     "preview": {
       "distribution": "internal",
-      "env": {
-        "ENABLE_EXPERIMENTAL_COREPACK": "1"
-      },
+      "corepack": true,
+      "pnpm": "10.26.1",
       "android": {
         "buildType": "apk"
       }
     },
     "production": {
       "autoIncrement": true,
-      "env": {
-        "ENABLE_EXPERIMENTAL_COREPACK": "1"
-      }
+      "corepack": true,
+      "pnpm": "10.26.1"
     }
   },
   "submit": {
