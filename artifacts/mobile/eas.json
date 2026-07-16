@@ -8,6 +8,7 @@
       "distribution": "internal",
       "corepack": true,
       "pnpm": "10.26.1",
+      "node": "20.18.1",
       "android": {
         "buildType": "apk"
       }
@@ -15,7 +16,8 @@
     "production": {
       "autoIncrement": true,
       "corepack": true,
-      "pnpm": "10.26.1"
+      "pnpm": "10.26.1",
+      "node": "20.18.1"
     }
   },
   "submit": {
