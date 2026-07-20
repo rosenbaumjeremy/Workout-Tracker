@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Platform,
@@ -6,11 +6,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useColors } from '@/hooks/useColors';
+import {
+  MAX_NAME_LENGTH,
+  useProfile,
+  workoutLogTitle,
+} from '@/context/ProfileContext';
 import { useWorkouts } from '@/context/WorkoutContext';
 import { StatCard } from '@/components/StatCard';
 import { TotalsCard } from '@/components/TotalsCard';
@@ -24,6 +30,9 @@ export default function HomeScreen() {
   const colors = useColors();
   const insets = useSafeAreaInsets();
   const { workouts, stats, isLoaded, deleteWorkout } = useWorkouts();
+  const { name, isLoaded: isNameLoaded, setName } = useProfile();
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [nameDraft, setNameDraft] = useState(name);
   const recent = workouts.slice(0, 3);
   const today = new Date();
   const englishDate = new Intl.DateTimeFormat('en-US', {
@@ -34,10 +43,22 @@ export default function HomeScreen() {
   }).format(today);
   const hebrewDate = formatHebrewDate(today);
 
-  const handleDelete = (id: string, name: string) => {
+  // The stored name arrives asynchronously; keep the draft in step with it
+  // until the moment the user takes over the field.
+  useEffect(() => {
+    if (!isEditingName) setNameDraft(name);
+  }, [name, isEditingName]);
+
+  const commitName = () => {
+    setIsEditingName(false);
+    if (nameDraft.trim() === name) return;
+    setName(nameDraft);
+  };
+
+  const handleDelete = (id: string, workoutName: string) => {
     Alert.alert(
       'Delete workout?',
-      `"${name}" will be permanently removed.`,
+      `"${workoutName}" will be permanently removed.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -66,9 +87,48 @@ export default function HomeScreen() {
             <Text style={[styles.greeting, { color: colors.mutedForeground }]}>
               {greetingForNow()}
             </Text>
-            <Text style={[styles.title, { color: colors.foreground }]}>
-              Shai&apos;s Workout Log
-            </Text>
+            {isEditingName ? (
+              <TextInput
+                value={nameDraft}
+                onChangeText={setNameDraft}
+                onBlur={commitName}
+                onSubmitEditing={commitName}
+                autoFocus
+                selectTextOnFocus
+                maxLength={MAX_NAME_LENGTH}
+                returnKeyType="done"
+                placeholder="Your name"
+                placeholderTextColor={colors.mutedForeground}
+                style={[
+                  styles.title,
+                  styles.titleInput,
+                  { color: colors.foreground, borderBottomColor: colors.primary },
+                ]}
+                testID="profile-name-input"
+              />
+            ) : (
+              <Pressable
+                onPress={() => setIsEditingName(true)}
+                style={styles.titleRow}
+                accessibilityRole="button"
+                accessibilityLabel={`${workoutLogTitle(name)}. Tap to change the name.`}
+                testID="profile-name-edit"
+              >
+                <Text
+                  style={[styles.title, { color: colors.foreground }]}
+                  numberOfLines={1}
+                >
+                  {/* Render nothing until storage answers, so a stored name
+                      doesn't visibly overwrite the default on launch. */}
+                  {isNameLoaded ? workoutLogTitle(name) : ' '}
+                </Text>
+                <Feather
+                  name="edit-2"
+                  size={14}
+                  color={colors.mutedForeground}
+                />
+              </Pressable>
+            )}
             <View style={styles.dateRow}>
               <Text style={[styles.dateText, { color: colors.mutedForeground }]}>
                 {englishDate}
@@ -195,6 +255,17 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Inter_700Bold',
     marginTop: 2,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  titleInput: {
+    borderBottomWidth: 2,
+    paddingVertical: 0,
+    alignSelf: 'flex-start',
+    minWidth: 200,
   },
   dateRow: {
     flexDirection: 'row',

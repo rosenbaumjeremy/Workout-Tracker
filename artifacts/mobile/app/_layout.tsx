@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ProfileProvider } from '@/context/ProfileContext';
 import { WorkoutProvider } from '@/context/WorkoutContext';
 import {
   Inter_400Regular,
@@ -65,13 +66,15 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ErrorBoundary>
         <QueryClientProvider client={queryClient}>
-          <WorkoutProvider>
-            <GestureHandlerRootView>
-              <KeyboardProvider>
-                <RootLayoutNav />
-              </KeyboardProvider>
-            </GestureHandlerRootView>
-          </WorkoutProvider>
+          <ProfileProvider>
+            <WorkoutProvider>
+              <GestureHandlerRootView>
+                <KeyboardProvider>
+                  <RootLayoutNav />
+                </KeyboardProvider>
+              </GestureHandlerRootView>
+            </WorkoutProvider>
+          </ProfileProvider>
         </QueryClientProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
